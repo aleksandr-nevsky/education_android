@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Education Android</string>
+    <string name="new_folder">Новая папка</string>
+    <string name="new_folder2">Новая папка 2</string>
+    <string name="new_folder3">Новая папка 3</string>
+    <string name="detail">Детали</string>
 </resources>
