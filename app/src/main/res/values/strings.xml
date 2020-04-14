@@ -4,4 +4,7 @@
     <string name="new_folder2">Новая папка 2</string>
     <string name="new_folder3">Новая папка 3</string>
     <string name="detail">Детали</string>
+    <string name="new_folder_description">Описание фильма Новая папка.</string>
+    <string name="new_folder2_description">Описание фильма Новая папка 2.</string>
+    <string name="new_folder3_description">Описание фильма Новая папка 3.</string>
 </resources>
