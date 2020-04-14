@@ -43,6 +43,21 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun onExplicitInviteFriend(view: View?) {
+        val textMessage = "Hello, friend!"
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT, textMessage)
+        sendIntent.type = "text/plain"
+        val title = resources.getString(R.string.app_name)
+        // Создаем Intent для отображения диалога выбора.
+        val chooser = Intent.createChooser(sendIntent, title)
+        // Проверяем, что intent может быть успешно обработан
+        sendIntent.resolveActivity(packageManager)?.let {
+            startActivity(chooser)
+        }
+    }
+
     private fun colorizeFilmLabel() {
         Log.i("MY", "Storage.filmId = " + MyStorage.filmId);
         this.textView.setTextColor(Color.BLACK)
