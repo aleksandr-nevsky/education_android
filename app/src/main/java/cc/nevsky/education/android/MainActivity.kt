@@ -8,6 +8,12 @@ import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Главная Activity.
+ *
+ * @author Aleksandr Vvedenskiy
+ * @date 2020.04
+ */
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         this.colorizeFilmLabel()
     }
 
+    /**
+     * Клик по кнопке первого фильма.
+     */
     fun onNfClick(view: View?) {
         val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
         intent.putExtra("name", 1)
@@ -25,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Клик по кнопке второго фильма.
+     */
     fun onNf2Click(view: View?) {
         val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
         intent.putExtra("name", 2)
@@ -34,6 +46,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Клик по кнопке третьего фильма.
+     */
     fun onNf3Click(view: View?) {
         val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
         intent.putExtra("name", 3)
@@ -43,7 +58,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun onExplicitInviteFriend(view: View?) {
+    /**
+     * Неявное приглашение друга.
+     */
+    fun onImplicitInviteFriend(view: View?) {
         val textMessage = "Hello, friend!"
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
@@ -58,6 +76,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Отмечаем цветом выбранный фильм.
+     */
     private fun colorizeFilmLabel() {
         Log.i("MY", "Storage.filmId = " + MyStorage.filmId);
         this.textView.setTextColor(Color.BLACK)

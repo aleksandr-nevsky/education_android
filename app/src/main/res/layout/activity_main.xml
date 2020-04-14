@@ -106,7 +106,7 @@
         android:id="@+id/inviteFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onExplicitInviteFriend"
+        android:onClick="onImplicitInviteFriend"
         android:text="@string/invite_friend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

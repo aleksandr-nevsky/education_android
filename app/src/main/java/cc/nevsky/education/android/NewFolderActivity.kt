@@ -4,8 +4,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_new_folder.*
 
+/**
+ * Activity с описанием.
+ *
+ * @author Aleksandr Vvedenskiy
+ * @date 2020.04
+ */
 class NewFolderActivity : AppCompatActivity() {
 
+    /**
+     * Отрисовываем в зависимости от передаваемых параметров.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_folder)
