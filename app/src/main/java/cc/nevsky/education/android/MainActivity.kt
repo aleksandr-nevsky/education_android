@@ -1,5 +1,6 @@
 package cc.nevsky.education.android
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.system.exitProcess
 
 /**
  * Главная Activity.
@@ -17,17 +19,34 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("MY", "onCreate");
+        Log.i("MY", "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         this.colorizeFilmLabel()
     }
 
     /**
+     * Переопределяем кнопку "Назад". Закрываем приложение.
+     */
+    override fun onBackPressed() {
+        Log.i("MY", "onBackPressed")
+        val dialog: Dialog = MyCustomDialog(this)
+        dialog.setOnDismissListener {
+            Log.i("MY", "setOnDismissListener")
+        }
+        dialog.setOnCancelListener {
+            Log.i("MY", "setOnCancelListener")
+            finishAndRemoveTask()
+            exitProcess(0)
+        }
+        dialog.show()
+    }
+
+    /**
      * Клик по кнопке первого фильма.
      */
     fun onNfClick(view: View?) {
-        val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
+        val intent = Intent(this@MainActivity, FilmDescriptionActivity::class.java)
         intent.putExtra("name", 1)
         MyStorage.filmId = 1
         colorizeFilmLabel()
@@ -38,7 +57,7 @@ class MainActivity : AppCompatActivity() {
      * Клик по кнопке второго фильма.
      */
     fun onNf2Click(view: View?) {
-        val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
+        val intent = Intent(this@MainActivity, FilmDescriptionActivity::class.java)
         intent.putExtra("name", 2)
         MyStorage.filmId = 2
         colorizeFilmLabel()
@@ -50,7 +69,7 @@ class MainActivity : AppCompatActivity() {
      * Клик по кнопке третьего фильма.
      */
     fun onNf3Click(view: View?) {
-        val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
+        val intent = Intent(this@MainActivity, FilmDescriptionActivity::class.java)
         intent.putExtra("name", 3)
         MyStorage.filmId = 3
         colorizeFilmLabel()
@@ -80,7 +99,7 @@ class MainActivity : AppCompatActivity() {
      * Отмечаем цветом выбранный фильм.
      */
     private fun colorizeFilmLabel() {
-        Log.i("MY", "Storage.filmId = " + MyStorage.filmId);
+        Log.i("MY", "Storage.filmId = " + MyStorage.filmId)
         this.textView.setTextColor(Color.BLACK)
         this.textView2.setTextColor(Color.BLACK)
         this.textView3.setTextColor(Color.BLACK)

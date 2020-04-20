@@ -1,11 +1,16 @@
 <resources>
-    <string name="app_name">Education Android</string>
-    <string name="new_folder">Новая папка</string>
-    <string name="new_folder2">Новая папка 2</string>
-    <string name="new_folder3">Новая папка 3</string>
+    <string name="app_name" translatable="false">Education Android</string>
+    <string name="new_folder" translatable="false">Новая папка</string>
+    <string name="new_folder2" translatable="false">Новая папка 2</string>
+    <string name="new_folder3" translatable="false">Новая папка 3</string>
     <string name="detail">Детали</string>
-    <string name="new_folder_description">Описание фильма Новая папка.</string>
-    <string name="new_folder2_description">Описание фильма Новая папка 2.</string>
-    <string name="new_folder3_description">Описание фильма Новая папка 3.</string>
-    <string name="invite_friend">Пригласить \nдруга</string>
+    <string name="new_folder_description" translatable="false">Описание фильма Новая папка.</string>
+    <string name="new_folder2_description" translatable="false">Описание фильма Новая папка 2.</string>
+    <string name="new_folder3_description" translatable="false">Описание фильма Новая папка 3.</string>
+    <string name="invite_friend">Пригласить\nдруга</string>
+    <string name="button_close">Закрыть</string>
+    <string name="exit_title">Завершение работы</string>
+    <string name="exit_description">Закрыть приложений?</string>
+    <string name="button_break">Отмена</string>
+    <string name="night_mode">Ночной режим</string>
 </resources>

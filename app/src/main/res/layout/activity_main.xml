@@ -106,6 +106,8 @@
         android:id="@+id/inviteFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/invite_friend_24dp"
+        android:drawablePadding="10dp"
         android:onClick="onImplicitInviteFriend"
         android:text="@string/invite_friend"
         app:layout_constraintBottom_toBottomOf="parent"

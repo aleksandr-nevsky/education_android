@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="detail">Details</string>
+    <string name="invite_friend">Invite\nfriend</string>
+    <string name="button_close">Close</string>
+    <string name="exit_description">Close Application?</string>
+    <string name="exit_title">Shutdown</string>
+    <string name="button_break">Cancel</string>
+    <string name="night_mode">NIght mode</string>
+</resources>

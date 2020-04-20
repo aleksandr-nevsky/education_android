@@ -11,6 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:drawableStart="@drawable/invite_friend_24dp"
+        android:drawablePadding="10dp"
         android:onClick="onImplicitInviteFriend"
         android:text="@string/invite_friend"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +80,7 @@
     <Button
         android:id="@+id/button2"
         android:layout_width="100dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:onClick="onNf2Click"
         android:text="@string/detail"
         app:layout_constraintEnd_toEndOf="parent"

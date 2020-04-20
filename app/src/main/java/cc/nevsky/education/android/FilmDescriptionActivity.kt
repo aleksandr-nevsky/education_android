@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_new_folder.*
  * @author Aleksandr Vvedenskiy
  * @date 2020.04
  */
-class NewFolderActivity : AppCompatActivity() {
+class FilmDescriptionActivity : AppCompatActivity() {
 
     /**
      * Отрисовываем в зависимости от передаваемых параметров.
