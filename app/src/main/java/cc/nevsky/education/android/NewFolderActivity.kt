@@ -1,7 +1,7 @@
 package cc.nevsky.education.android
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_new_folder.*
 
 /**
@@ -19,24 +19,11 @@ class NewFolderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_folder)
 
-        val value = getIntent().getIntExtra("name", 0)
-        when (value) {
-            1 -> {
-                this.filmView.setImageResource(R.drawable.new_folder)
-                this.description.setText(R.string.new_folder_description)
-            }
-            2 -> {
-                this.filmView.setImageResource(R.drawable.new_folder_2)
-                this.description.setText(R.string.new_folder2_description)
+        val pictureId = getIntent().getIntExtra("pictureId", 0)
+        val description = getIntent().getStringExtra("shortDescription")
 
-            }
-            3 -> {
-                this.filmView.setImageResource(R.drawable.new_folder_3)
-                this.description.setText(R.string.new_folder3_description)
-            }
-            else -> {
-            }
-        }
-
+        this.filmView.setImageResource(pictureId)
+        this.description.setText(description)
     }
+
 }

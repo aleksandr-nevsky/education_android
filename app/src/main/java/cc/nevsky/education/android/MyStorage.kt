@@ -16,4 +16,9 @@ object MyStorage {
      * Счётчик дополнительно загруженных страниц.
      */
     var filmCounter = 1
+
+    /**
+     * Список избранных фильмов
+     */
+    var favoriteList: MutableList<FilmsItem> = mutableListOf()
 }

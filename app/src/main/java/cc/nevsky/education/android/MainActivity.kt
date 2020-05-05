@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import cc.nevsky.education.android.utils.CommonUtils
 
+// TODO: остановился на списке избранного. Собирался делать активити.
 /**
  * Главная Activity.
  *
@@ -18,10 +22,14 @@ import cc.nevsky.education.android.utils.CommonUtils
  * @date 2020.04
  */
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val TAG = "MyApp"
+    }
+
     private val listOfFilms = CommonUtils().generateFilmsList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("MY", "onCreate");
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -37,15 +45,37 @@ class MainActivity : AppCompatActivity() {
         val recycler = findViewById<RecyclerView>(R.id.recyclerView)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recycler.layoutManager = layoutManager
-        recycler.adapter = FilmsAdapter(LayoutInflater.from(this), listOfFilms)
+        recycler.adapter = FilmsAdapter(LayoutInflater.from(this), listOfFilms,
+            object : FilmsAdapter.OnFilmsClickListener {
+                override fun onFilmClick(filmsItem: FilmsItem, position: Int, titleTv: TextView) {
+                }
+
+                override fun onDetailClick(filmsItem: FilmsItem) {
+                    // region вызов активити с описанием
+                    val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
+                    intent.putExtra("title", filmsItem.title)
+                    intent.putExtra("shortDescription", filmsItem.shortDescription)
+                    intent.putExtra("pictureId", filmsItem.pictureId)
+                    startActivity(intent)
+                    // endregion
+                }
+
+                override fun onFilmLongClick(filmsItem: FilmsItem) {
+                    Log.i(TAG, "onFilmLongClick")
+                    MyStorage.favoriteList.add(filmsItem)
+                    Toast.makeText(applicationContext, "${filmsItem.title} добавлен в избранное.", Toast.LENGTH_LONG).show()
+                }
+            })
+
 
         // Если дошли до конца списка - кладём в список ещё пачку.
-        recycler.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(layoutManager.findLastVisibleItemPosition() == listOfFilms.size) {
+                if (layoutManager.findLastVisibleItemPosition() == listOfFilms.size) {
                     listOfFilms.addAll(CommonUtils().generateFilmsList())
                     recycler.adapter?.notifyItemRangeChanged(listOfFilms.size - 10, 10)
                 }
+                findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout).isRefreshing = false
             }
         })
 
@@ -74,6 +104,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(chooser)
             }
         }
+
+        findViewById<View>(R.id.favoriteBtn).setOnClickListener {
+            val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
+//            intent.putExtra("title", filmsItem.title)
+
+            startActivity(intent)
+        }
+
     }
 
 }
