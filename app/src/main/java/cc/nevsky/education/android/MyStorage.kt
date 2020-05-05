@@ -11,4 +11,9 @@ object MyStorage {
      * Выбранный фильм.
      */
     var filmId: Int = 0
+
+    /**
+     * Счётчик дополнительно загруженных страниц.
+     */
+    var filmCounter = 1
 }
