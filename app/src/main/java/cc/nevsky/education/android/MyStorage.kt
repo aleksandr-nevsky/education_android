@@ -1,5 +1,7 @@
 package cc.nevsky.education.android
 
+import cc.nevsky.education.android.utils.CommonUtils
+
 /**
  * Объект для хранения состояния.
  *
@@ -8,11 +10,6 @@ package cc.nevsky.education.android
  */
 object MyStorage {
     /**
-     * Выбранный фильм.
-     */
-    var filmId: Int = 0
-
-    /**
      * Счётчик дополнительно загруженных страниц.
      */
     var filmCounter = 1
@@ -20,5 +17,10 @@ object MyStorage {
     /**
      * Список избранных фильмов
      */
-    var favoriteList: MutableList<FilmsItem> = mutableListOf()
+    val favoriteList: MutableList<FilmsItem> = mutableListOf()
+
+    /**
+     * Список всех фильмов
+     */
+    val listOfFilms = CommonUtils().generateFilmsList()
 }

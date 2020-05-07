@@ -1,6 +1,5 @@
 package cc.nevsky.education.android
 
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

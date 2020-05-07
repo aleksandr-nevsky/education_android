@@ -10,4 +10,6 @@
     <string name="invite_friend">Пригласить \nдруга</string>
     <string name="list_films">Список фильмов</string>
     <string name="favorite">Избранное</string>
+    <string name="favorite_Films">Избранные фильмы</string>
+    <string name="delete">Удалить</string>
 </resources>

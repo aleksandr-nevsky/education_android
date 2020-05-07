@@ -22,22 +22,4 @@
             tools:listitem="@layout/item_films" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-    <Button
-        android:id="@+id/inviteFriendBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/invite_friend"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/favoriteBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/favorite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

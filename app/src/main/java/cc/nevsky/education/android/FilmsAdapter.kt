@@ -2,7 +2,6 @@ package cc.nevsky.education.android
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_films.view.*
 
@@ -41,18 +40,20 @@ class FilmsAdapter(
         if (holder is FilmsItemViewHolder) {
             val filmsItem: FilmsItem = items[position - 1] // -1 header
             holder.bind(filmsItem)
-            holder.itemView.setOnClickListener {
-                listener.onFilmClick(
-                    filmsItem, position - 1, holder.titleTv
-                )
-            }
-            holder.itemView.detailBtn.setOnClickListener { listener.onDetailClick(filmsItem) }
+
+            holder.itemView.detailBtn.setOnClickListener { listener.onDetailClick(filmsItem, position) }
 
             holder.itemView.setOnLongClickListener {
                 listener.onFilmLongClick(filmsItem)
                 return@setOnLongClickListener true
             }
+
+            when(listener.usageAs) {
+            "list" -> holder.itemView.detailBtn.text = inflater.context.getString(R.string.detail)
+            "favorite" -> holder.itemView.detailBtn.text = inflater.context.getString(R.string.delete)
+            }
         }
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -60,8 +61,9 @@ class FilmsAdapter(
     }
 
     interface OnFilmsClickListener {
-        fun onFilmClick(filmsItem: FilmsItem, position: Int, titleTv: TextView)
-        fun onDetailClick(filmsItem: FilmsItem)
+        fun onDetailClick(filmsItem: FilmsItem, position: Int)
         fun onFilmLongClick(filmsItem: FilmsItem)
+
+        var usageAs: String
     }
 }
