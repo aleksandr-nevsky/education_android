@@ -41,7 +41,7 @@ class FilmsAdapter(
             val filmsItem: FilmsItem = items[position - 1] // -1 header
             holder.bind(filmsItem)
 
-            holder.itemView.detailBtn.setOnClickListener { listener.onDetailClick(filmsItem, position) }
+            holder.itemView.detailBtn.setOnClickListener { listener.onDetailClick(filmsItem, holder.adapterPosition) }
 
             holder.itemView.setOnLongClickListener {
                 listener.onFilmLongClick(filmsItem)
