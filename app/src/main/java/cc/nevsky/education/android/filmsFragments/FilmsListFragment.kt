@@ -38,7 +38,7 @@ class FilmsListFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.recyclerView).adapter = FilmsAdapter(LayoutInflater.from(activity), MyStorage.listOfFilms,
         object : FilmsAdapter.OnFilmsClickListener{
             override fun onDetailClick(filmsItem: FilmsItem, position: Int) {
-                listener?.onDetailClick(filmsItem)
+                listener?.onDetailClick(filmsItem, position)
             }
 
             override fun onFilmLongClick(filmsItem: FilmsItem) {
@@ -50,7 +50,7 @@ class FilmsListFragment : Fragment() {
     }
 
     interface FilmsListListener {
-        fun onDetailClick(filmsItem: FilmsItem)
+        fun onDetailClick(filmsItem: FilmsItem, position: Int)
         fun onAddToFavoriteClick(filmsItem: FilmsItem)
     }
 }

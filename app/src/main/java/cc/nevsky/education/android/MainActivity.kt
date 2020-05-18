@@ -2,13 +2,16 @@ package cc.nevsky.education.android
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cc.nevsky.education.android.filmsFragments.FilmsDetailedFragment
+import cc.nevsky.education.android.filmsFragments.FilmsFavoriteListFragment
 import cc.nevsky.education.android.filmsFragments.FilmsListFragment
-import cc.nevsky.education.android.goAhead.NewsDetailedFragment
 import cc.nevsky.education.android.goAhead.NewsListFragment
-import com.otus.otusfragmentsnew.recyclerTwo.NewsItem
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
+
 
 /**
  * Главная Activity.
@@ -16,7 +19,8 @@ import com.otus.otusfragmentsnew.recyclerTwo.NewsItem
  * @author Aleksandr Vvedenskiy
  * @date 2020.04
  */
-class MainActivity : AppCompatActivity(), FilmsListFragment.FilmsListListener {
+class MainActivity : AppCompatActivity(), FilmsListFragment.FilmsListListener,
+    FilmsFavoriteListFragment.FilmsFavoriteListListener {
     companion object {
         const val TAG = "MainActivity"
     }
@@ -26,28 +30,50 @@ class MainActivity : AppCompatActivity(), FilmsListFragment.FilmsListListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragment = FilmsListFragment();
-        fragment.listener = this
+        val filmsListFragment = FilmsListFragment()
+        filmsListFragment.listener = this
+
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, fragment, NewsListFragment.TAG)
+            .replace(R.id.fragmentContainer, filmsListFragment, NewsListFragment.TAG)
             .commit()
 
+
+//        val bottomNavigationView =
+//            findViewById(R.id.bottomNavigationView) as BottomNavigationView
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            Log.i(TAG, "OnNavigationItemSelectedListener")
+            when (item.itemId) {
+                R.id.films -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.fragmentContainer,
+                            FilmsListFragment().apply { listener = this@MainActivity },
+                            NewsListFragment.TAG
+                        )
+                        .commit()
+                    true
+                }
+                R.id.favorite -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.fragmentContainer,
+                            FilmsFavoriteListFragment().apply { listener = this@MainActivity },
+                            FilmsFavoriteListFragment.TAG
+                        )
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                else -> false
+            }
+        }
 
 //        initRecycler()
 //        initClickListeners()
-    }
-
-    private fun openNewsDetailedFragment(newsItem: NewsItem) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.fragmentContainer,
-                NewsDetailedFragment.newInstance(newsItem.title),
-                NewsDetailedFragment.TAG
-            )
-            .addToBackStack(null) // Возврат к предыдущему фрагменту
-            .commit()
     }
 
     private fun openFilmDetailedFragment(filmsItem: FilmsItem) {
@@ -62,11 +88,8 @@ class MainActivity : AppCompatActivity(), FilmsListFragment.FilmsListListener {
             .commit()
     }
 
-//    override fun onNewsSelect(newsItem: NewsItem) {
-//        openNewsDetailedFragment(newsItem)
-//    }
 
-    override fun onDetailClick(filmsItem: FilmsItem) {
+    override fun onDetailClick(filmsItem: FilmsItem, position: Int) {
         openFilmDetailedFragment(filmsItem)
     }
 
@@ -77,6 +100,37 @@ class MainActivity : AppCompatActivity(), FilmsListFragment.FilmsListListener {
             "${filmsItem.title} добавлен в избранное.",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onDeleteClick(filmsItem: FilmsItem, position: Int) {
+        Log.i(TAG, "onDeleteClick")
+        val isRemoved = MyStorage.favoriteList.remove(filmsItem)
+        Log.i(TAG, "is removed = $isRemoved")
+
+        // Вот тут я не понял правильно ли я делаю?
+        refreshFavoriteList()
+
+        Snackbar.make(findViewById(R.id.fragmentContainer), "Фильм удалён", Snackbar.LENGTH_LONG)
+            .setAnchorView(findViewById<BottomNavigationView>(R.id.bottomNavigationView))
+            .setAction("Отмена", View.OnClickListener {
+                MyStorage.favoriteList.add(filmsItem)
+                refreshFavoriteList()
+            })
+            .show()
+
+    }
+
+    /**
+     * Обновляем отображение списка избранных после удаления фильма.
+     */
+    private fun refreshFavoriteList() {
+        supportFragmentManager.findFragmentByTag(FilmsFavoriteListFragment.TAG)?.let {
+            supportFragmentManager
+                .beginTransaction()
+                .detach(it)
+                .attach(it)
+                .commit()
+        }
     }
 
 
