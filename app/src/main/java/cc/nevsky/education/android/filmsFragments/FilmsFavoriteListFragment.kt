@@ -12,6 +12,12 @@ import cc.nevsky.education.android.FilmsItem
 import cc.nevsky.education.android.MyStorage
 import cc.nevsky.education.android.R
 
+/**
+ * Fragment списка избранного.
+ *
+ * @author Aleksandr Vvedenskiy
+ * @date 2020.05
+ */
 class FilmsFavoriteListFragment : Fragment() {
     var listener: FilmsFavoriteListListener? = null
 
@@ -45,7 +51,9 @@ class FilmsFavoriteListFragment : Fragment() {
     }
 
     interface FilmsFavoriteListListener {
-//        fun onDetailClick(filmsItem: FilmsItem, position: Int)
+        /**
+         * Удаление из списка.
+         */
         fun onDeleteClick(filmsItem: FilmsItem, position: Int)
     }
 }

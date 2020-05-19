@@ -12,6 +12,12 @@ import cc.nevsky.education.android.FilmsItem
 import cc.nevsky.education.android.MyStorage
 import cc.nevsky.education.android.R
 
+/**
+ * Fragment списка фильмов.
+ *
+ * @author Aleksandr Vvedenskiy
+ * @date 2020.05
+ */
 class FilmsListFragment : Fragment() {
     var listener: FilmsListListener? = null
 
@@ -35,22 +41,30 @@ class FilmsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<RecyclerView>(R.id.recyclerView).adapter = FilmsAdapter(LayoutInflater.from(activity), MyStorage.listOfFilms,
-        object : FilmsAdapter.OnFilmsClickListener{
-            override fun onDetailClick(filmsItem: FilmsItem, position: Int) {
-                listener?.onDetailClick(filmsItem, position)
-            }
+        view.findViewById<RecyclerView>(R.id.recyclerView).adapter =
+            FilmsAdapter(LayoutInflater.from(activity), MyStorage.listOfFilms,
+                object : FilmsAdapter.OnFilmsClickListener {
+                    override fun onDetailClick(filmsItem: FilmsItem, position: Int) {
+                        listener?.onDetailClick(filmsItem, position)
+                    }
 
-            override fun onFilmLongClick(filmsItem: FilmsItem) {
-                listener?.onAddToFavoriteClick(filmsItem)
-            }
+                    override fun onFilmLongClick(filmsItem: FilmsItem) {
+                        listener?.onAddToFavoriteClick(filmsItem)
+                    }
 
-            override var usageAs: String = "list"
-        })
+                    override var usageAs: String = "list"
+                })
     }
 
     interface FilmsListListener {
+        /**
+         * Детали фильма
+         */
         fun onDetailClick(filmsItem: FilmsItem, position: Int)
+
+        /**
+         * Добавить в избранное.
+         */
         fun onAddToFavoriteClick(filmsItem: FilmsItem)
     }
 }

@@ -23,11 +23,6 @@ class FilmsDetailedFragment : Fragment() {
         private const val SHORT_DESCRIPTION = "SHORT_DESCRIPTION"
         private const val PICTURE_ID = "PICTURE_ID"
 
-        //        fun newInstance(
-//            title: String,
-//            shortDescription: String,
-//            pictureId: Int
-//        ): FilmsDetailedFragment {
         fun newInstance(filmsItem: FilmsItem): FilmsDetailedFragment {
             val fragment = FilmsDetailedFragment()
 
@@ -59,7 +54,6 @@ class FilmsDetailedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        (view as TextView).text = arguments?.getString(TITLE, "default")
         val description = arguments?.getString(TITLE, "default")
         val pictureId = arguments?.getInt(PICTURE_ID, 0)
 
@@ -67,5 +61,4 @@ class FilmsDetailedFragment : Fragment() {
         pictureId?.let { view.findViewById<ImageView>(R.id.filmView).setImageResource(it) }
 
     }
-
 }
