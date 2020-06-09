@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
  * @date 2020.04
  */
 class FilmsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val titleTv: TextView = itemView.findViewById(R.id.titleTv)
-    val shortDescription: TextView = itemView.findViewById(R.id.shortDescriptionTv)
-    val imgIv: ImageView = itemView.findViewById(R.id.imageIv)
+    private val titleTv: TextView = itemView.findViewById(R.id.titleTv)
+    private val shortDescription: TextView = itemView.findViewById(R.id.shortDescriptionTv)
+    private val imgIv: ImageView = itemView.findViewById(R.id.imageIv)
 
     fun bind(item: FilmsItem) {
         titleTv.text = item.title
-        shortDescription.text = item.shortDescription
+        shortDescription.text = item.title
 //        imgIv.setImageURI(Uri.parse(item.imagePath))
-        imgIv.setBackgroundResource(item.pictureId)
+        imgIv.setBackgroundResource(item.id)
 
     }
 }

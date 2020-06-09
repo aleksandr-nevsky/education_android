@@ -1,7 +1,5 @@
 package cc.nevsky.education.android
 
-import cc.nevsky.education.android.utils.CommonUtils
-
 /**
  * Объект для хранения состояния.
  *
@@ -22,5 +20,6 @@ object MyStorage {
     /**
      * Список всех фильмов
      */
-    val listOfFilms = CommonUtils().generateFilmsList()
+//    val listOfFilms = CommonUtils().generateFilmsList()
+    val listOfFilms: MutableList<FilmsItem> = mutableListOf()
 }

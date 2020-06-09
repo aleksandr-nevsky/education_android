@@ -1,15 +1,18 @@
 package cc.nevsky.education.android
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import cc.nevsky.education.android.filmsFragments.FilmsDetailedFragment
-import cc.nevsky.education.android.filmsFragments.FilmsFavoriteListFragment
-import cc.nevsky.education.android.filmsFragments.FilmsListFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
+import cc.nevsky.education.android.exitToInternet.App
+import cc.nevsky.education.android.exitToInternet.FilmModel
+import cc.nevsky.education.android.exitToInternet.FilmsAdapter
+import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /**
@@ -18,123 +21,74 @@ import com.google.android.material.snackbar.Snackbar
  * @author Aleksandr Vvedenskiy
  * @date 2020.04
  */
-class MainActivity : AppCompatActivity(), FilmsListFragment.FilmsListListener,
-    FilmsFavoriteListFragment.FilmsFavoriteListListener {
+class MainActivity : AppCompatActivity() {
     companion object {
-        const val TAG = "MainActivity"
+        const val TAG = "MyApp"
     }
+
+    val items = mutableListOf<FilmsItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        val adapter = getAdapter()
 
-        initFragments()
-        initBottomNavigation()
-    }
+        list.adapter = FilmsAdapter(LayoutInflater.from(this), items, getOnFilmClickListener())
+        App.instance.api.getFilms().enqueue(object : Callback<List<FilmModel>?> {
+            override fun onFailure(call: Call<List<FilmModel>?>, t: Throwable) {
 
-    /**
-     * Инициализация BottomNavigation
-     */
-    private fun initBottomNavigation() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            Log.i(TAG, "OnNavigationItemSelectedListener")
-            when (item.itemId) {
-                R.id.films -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.fragmentContainer,
-                            FilmsListFragment().apply { listener = this@MainActivity },
-                            FilmsListFragment.TAG
-                        )
-                        .commit()
-                    true
-                }
-                R.id.favorite -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.fragmentContainer,
-                            FilmsFavoriteListFragment().apply { listener = this@MainActivity },
-                            FilmsFavoriteListFragment.TAG
-                        )
-                        .addToBackStack(null)
-                        .commit()
-                    true
-                }
-                else -> false
             }
-        }
-    }
 
-    /**
-     * Инициализация фрагментов.
-     */
-    private fun initFragments() {
-        val filmsListFragment = FilmsListFragment()
-        filmsListFragment.listener = this
-
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, filmsListFragment, FilmsListFragment.TAG)
-            .commit()
-    }
-
-    /**
-     * Обновляем отображение списка избранных после удаления фильма.
-     */
-    private fun refreshFavoriteList() {
-        supportFragmentManager.findFragmentByTag(FilmsFavoriteListFragment.TAG)?.let {
-            supportFragmentManager
-                .beginTransaction()
-                .detach(it)
-                .attach(it)
-                .commit()
-        }
-    }
-
-    private fun openFilmDetailedFragment(filmsItem: FilmsItem) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.fragmentContainer,
-                FilmsDetailedFragment.newInstance(filmsItem),
-                FilmsDetailedFragment.TAG
-            )
-            .addToBackStack(null) // Возврат к предыдущему фрагменту
-            .commit()
-    }
-
-
-    override fun onDetailClick(filmsItem: FilmsItem, position: Int) {
-        openFilmDetailedFragment(filmsItem)
-    }
-
-    override fun onAddToFavoriteClick(filmsItem: FilmsItem) {
-        MyStorage.favoriteList.add(filmsItem)
-        Toast.makeText(
-            applicationContext,
-            "${filmsItem.title} добавлен в избранное.",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    override fun onDeleteClick(filmsItem: FilmsItem, position: Int) {
-        Log.i(TAG, "onDeleteClick")
-        val isRemoved = MyStorage.favoriteList.remove(filmsItem)
-        Log.i(TAG, "is removed = $isRemoved")
-
-        // Вот тут я не понял правильно ли я делаю?
-        refreshFavoriteList()
-
-        Snackbar.make(findViewById(R.id.fragmentContainer), "Фильм удалён", Snackbar.LENGTH_LONG)
-            .setAnchorView(findViewById<BottomNavigationView>(R.id.bottomNavigationView))
-            .setAction("Отмена") {
-                MyStorage.favoriteList.add(filmsItem)
-                refreshFavoriteList()
+            override fun onResponse(
+                call: Call<List<FilmModel>?>,
+                response: Response<List<FilmModel>?>
+            ) {
+                items.clear()
+                if (response.isSuccessful) {
+                    response.body()
+                        ?.forEach {
+                            items.add(
+                                FilmsItem(
+                                    it.id,
+                                    it.title,
+                                    it.image
+                                )
+                            )
+                        }
+                }
+                if(list.adapter is FilmsAdapter) {
+                    (list.adapter as FilmsAdapter).notifyDataSetChanged()
+                }
+//                (list.adapter as FilmsAdapter).notifyDataSetChanged()
             }
-            .show()
+        })
+    }
+
+    private fun getOnFilmClickListener() : FilmsAdapter.OnFilmsClickListener {
+        return object : FilmsAdapter.OnFilmsClickListener {
+            override fun onDetailClick(filmsItem: FilmsItem, position: Int) {
+                    // region вызов активити с описанием
+                    val intent = Intent(this@MainActivity, NewFolderActivity::class.java)
+                    intent.putExtra("title", filmsItem.title)
+                    intent.putExtra("shortDescription", filmsItem.title)
+//                    intent.putExtra("pictureId", filmsItem.id)
+                    intent.putExtra("imageUrl", filmsItem.image)
+                    startActivity(intent)
+                    // endregion
+                }
+
+                override fun onFilmLongClick(filmsItem: FilmsItem) {
+                    Log.i(TAG, "onFilmLongClick")
+                    MyStorage.favoriteList.add(filmsItem)
+                    Toast.makeText(
+                        applicationContext,
+                        "${filmsItem.title} добавлен в избранное.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                override var usageAs: String = "list"
+
+        }
     }
 }
